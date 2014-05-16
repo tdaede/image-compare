@@ -7,6 +7,10 @@ mapping = "1 2 3 4 5 6 7 9 11 13 16 20 25 30 37 45 55 67 81 99 122 148 181 221 2
 function reloadImage() {
     $('#i1').attr('src','subset1/00000000Abandoned_Packard_Automobile_Factory_Detroit_200.y4m-' + mapping[$('#qindex').val()] + '-daala.png');
     $('#q').html(mapping[$('#qindex').val()]);
+    $('#loading').html("Loading...");
+}
+function imageFinished() {
+    $('#loading').html('');
 }
 $(function() {
     reloadImage();
@@ -19,8 +23,8 @@ input {
 </style>
 </head>
 <body>
-<input id="qindex" type="range" min="0" max="27" value="1" onInput="reloadImage();"></input>-v <span id="q"></span>
+<input id="qindex" type="range" min="0" max="27" value="1" onInput="reloadImage();"></input>-v <span id="q"></span> <span id="loading">Loading...</span>
 <p>
-<img id="i1">
+<img id="i1" onLoad="imageFinished()">
 </body>
 </html>
