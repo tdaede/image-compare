@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+PLANE=$1
+ENCODER_EXAMPLE=$2
+DUMP_PSNRHVS=$3
+DUMP_SSIM=$4
+DUMP_FASTSSIM=$5
+FILE=$6
+
+BASENAME=$(basename $FILE)
+rm $BASENAME.out 2> /dev/null || true
+echo $BASENAME
+
+QUALITY="1 2 3 4 5 6 7 9 11 13 16 20 25 30 37 45 55 67 81 99 122 148 181 221 270 330 400 500"
+for x in $QUALITY; do
+  OD_LOG_MODULES='encoder:10' OD_DUMP_IMAGES_SUFFIX=$BASENAME $ENCODER_EXAMPLE -v $x $FILE -o /dev/null 2> $BASENAME-$x-enc.out
+  $BUILD_ROOT/tools/y4m2png 00000000$BASENAME.y4m -o 00000000$BASENAME-$x-daala.png
+  rm 00000000$BASENAME.y4m $BASENAME-$x-enc.out
+done
